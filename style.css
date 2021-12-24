@@ -1,0 +1,39 @@
+.row {
+    display: flex;
+}
+.field {
+    width: 1.5%;
+    height: 1.5vw;
+    background-color: black;
+    border: 1px solid;
+}
+
+.snake1 {
+    background-color: green !important;
+}
+.snake2 {
+    background-color: orange !important;
+}
+
+.apple {
+    background-color: red !important;
+}
+
+#grid {
+    width: 100%;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+}
+
+#waiting-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#control {
+    display: flex;
+    width: 25%;
+}

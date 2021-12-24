@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="waiting-screen">
+        <h1>Welcome to two player Snake! Lukas Schatzer ©</h1>
+        <h3>Wait for another player to connect...</h3>
+        <img src="waiting.gif" alt="Gif einer Schlange">
+        <div id="control">
+            <img src="control.jpg" alt="Bild von WASD einer Tastatur" width="50%">
+            <div style="font-size: xx-large;">
+                <p>W - Go Up</p>
+                <p>D - Go Right</p>
+                <p>S - Go Down</p>
+                <p>A - Go Left</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="grid"></div>
+    
+    <script>
+
+        const SERVER_IP_ADDRESS = "192.168.1.5:8080";
+
+        const grid = [...Array(30)].map(e=>[...Array(50)]);
+        Array.from(Array(30)).forEach(_=>{
+            const div = document.createElement("div");
+            div.classList.add("row");
+            document.getElementById("grid").appendChild(div);
+        });
+        Array.from(document.getElementsByClassName("row")).forEach((row,i)=>{
+            Array.from(Array(50)).forEach((_,x)=>{
+                const div = document.createElement("div");
+                div.classList.add("field");
+                row.appendChild(div);
+                grid[i][x] = div;
+            });
+        });
+        let firstConn = true;
+        const websocket = new WebSocket(`ws://${SERVER_IP_ADDRESS}`);
+        websocket.onmessage = function(msg) {
+            if (firstConn) {
+                document.getElementById("waiting-screen").style.display = "none";
+                document.getElementById("control").style.display = "none";
+                document.getElementById("grid").style.display = "flex";
+            }
+            grid.forEach(e => e.forEach(e => {
+                e.classList.remove("snake1");
+                e.classList.remove("snake2");
+                e.classList.remove("apple");
+            }));
+            let data = JSON.parse(msg.data);
+            if (data.gameOver) {
+                websocket.send("EXIT")
+                if (confirm(data.gameOver + "\n" + "Wanna do a rematch?")) {
+                    location.reload();
+                } else {
+                    window.close();
+                }
+            } else {
+                data.snake1.forEach(e => grid[e.row][e.column].classList.add("snake1"));
+                data.snake2.forEach(e => grid[e.row][e.column].classList.add("snake2"));
+                grid[data.apple.row][data.apple.column].classList.add("apple");
+            }
+        }
+
+        document.addEventListener("keydown", function(event) {
+            websocket.send(event.keyCode);
+        });
+
+    </script>
+
+</body>
+</html>
