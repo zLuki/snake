@@ -1,12 +1,11 @@
-# Snake für zwei Spieler in Javscript
+# Snake für zwei Spieler in HTML/CSS/Javascript
 
 ## Installation
 - Repository herunterladen
-- ```npm install```
-- client.html öffnen und beim script die SERVER_IP_ADDRESS auf die IP Adresse des Servers ändern.
-- ```npm run start```
-
-Jetzt kann die client.html Datei geöffnet und gespielt werden
+- Im Terminal ```npm install```
+- client.html mit Editor öffnen und beim Script die SERVER_IP_ADDRESS auf die IP Adresse des Servers ändern.
+- Im Terminal ```npm run start```, um den Server zu hosten.
+- client.html auf verschiedenen Geräten mit dem Browser öffnen.
 
 ## Einfacher zwei Spieler Modus
 Damit man sich das Repository nicht auf zwei Geräten herunterladen muss, empfehle ich die client.html mit dem VSCode Plugin LiveServer zu starten.
